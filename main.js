@@ -41,13 +41,15 @@ async function add_media(keyword) {
       await axios.delete('http://127.0.0.1:4156/v1.1/media/'+play_list.data.media_play_list[1].unique, {})
 
       // send text value
-      await axios.post('http://127.0.0.1:4156/v1.1/plugin/params', {
-          unique: 'name',
-          params: [{
-              key: "text",
-              value: "正在播放: " + keyword,
-          }]
-      })
+      await setTimeout(async function(){
+          await axios.post('http://127.0.0.1:4156/v1.1/plugin/params', {
+              unique: 'name',
+              params: [{
+                  key: "text",
+                  value: "正在播放: " + keyword,
+              }]
+          })
+      },3000)
 
   } catch (error) {
     console.log("与kplayer接口调用失败： " + JSON.stringify(error.response.data));
@@ -80,7 +82,7 @@ new DanmakuService({
         if(match_result.length == 1)
             return;
 
-        const search_keyword = [1].trim();
+        const search_keyword = match_result[1].trim();
         add_media(search_keyword);
     } else {
       //console.log(msg)
